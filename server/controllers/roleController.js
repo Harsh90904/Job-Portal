@@ -3,12 +3,12 @@ const jwt = require('jsonwebtoken');
 const role = require('../models/role');
 const { sendMail } = require('../utils/mailer');
 const otps = new Map();
-const registerUser = async (req, res) => {
+exports.registerUser = async (req, res) => {
   let { email, password } = req.body;
   try {
     let user = await role.findOne({ email: email });
     if (user) {
-      return res.status(403).json({ msg: "user already registered" });
+      return res.status(403).send({ msg: "user already registered" });
     } else {
       let hash = await bcrypt.hash(password, 10);
       req.body.password = hash;
@@ -39,28 +39,28 @@ const registerUser = async (req, res) => {
       try {
         await sendMail(email, "verify", html);
       } catch (error) {
-        return res.status(400).json({ message: error.message });
+        return res.status(400).send({ message: error.message });
       }
-      return res.status(201).json({
+      return res.status(201).send({
         msg: "user created",
         token: token,
         isVerified: user.isVerified,
       });
     }
   } catch (error) {
-    res.status(500).json({ msg: "err", error: error.message });
+    res.status(500).send({ msg: "err", error: error.message });
   }
 };
 
-const loginUser = async (req, res) => {
+exports.loginUser = async (req, res) => {
   let { email, password } = req.body;
   let user = await role.findOne({ email });
   if (!user) {
-    return res.status(404).json({ msg: "user not found" });
+    return res.status(404).send({ msg: "user not found" });
   }
   let isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) {
-    return res.status(404).json({ msg: "invalid password " });
+    return res.status(404).send({ msg: "invalid password " });
   }
   let data = {
     email: user.email,
@@ -72,7 +72,5 @@ const loginUser = async (req, res) => {
   let token = await jwt.sign(data, "private-key");
   return res
     .status(200)
-    .json({ msg: "user loggedIn", token: token, isVerified: user.isVerified,isActive: user.isActive });
+    .send({ msg: "user loggedIn", token: token, isVerified: user.isVerified,isActive: user.isActive });
 };
-
-module.exports= {registerUser,loginUser}

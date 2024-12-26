@@ -9,18 +9,18 @@ const createJob = async (req, res) => {
     await job.save();
     console.log(job);
     
-    res.status(201).json({ message: 'Job created successfully', job });
+    res.status(201).send({ message: 'Job created successfully', job });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).send({ error: error.message });
   }
 };
 
 const getJobs = async (req, res) => {
   try {
     const jobs = await Job.find({});
-    res.status(200).json(jobs);
+    res.status(200).send(jobs);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).send({ error: error.message });
   }
 };
 module.exports = {createJob,getJobs}

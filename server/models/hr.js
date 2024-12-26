@@ -6,7 +6,7 @@ const hrSchema = new mongoose.Schema({
     email:{type:"string",required:true},
     password:{type:"string",required:true},
     phone:{type:"string",required:true},
-    role:{type:"string",enum:['HR'],default:'HR'}
+    stasus:{type:"string"}
 })
 
 const HR = mongoose.model('HR', hrSchema);
