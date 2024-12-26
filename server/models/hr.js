@@ -8,3 +8,5 @@ const hr = new mongoose.Schema({
     phone:{type:"string",required:true},
     role:{type:"string",enum:['HR'],default:'HR'}
 })
+
+console.log("yergehergye");
