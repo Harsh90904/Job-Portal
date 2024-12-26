@@ -9,4 +9,8 @@ const hr = new mongoose.Schema({
     role:{type:"string",enum:['HR'],default:'HR'}
 })
 
-console.log("yergehergye");
+console.log();
+console.log();
+console.log();
+console.log();
+
