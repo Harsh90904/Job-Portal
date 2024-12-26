@@ -10,4 +10,6 @@ const jobSchema = new mongoose.Schema({
   user:{type:mongoose.Types.ObjectId , ref:"user"}
 });
 
-module.exports = mongoose.model('Job', jobSchema);
+const Job = mongoose.model('Job', jobSchema);
+
+module.exports = Job;

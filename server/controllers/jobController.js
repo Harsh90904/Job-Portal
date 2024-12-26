@@ -1,7 +1,7 @@
 const { decode } = require('../middlewares/decode');
 const Job = require('../models/Job');
 
-exports.createJob = async (req, res) => {
+const createJob = async (req, res) => {
   try {
     const { title, description, company, location, salary } = req.body;
 
@@ -15,7 +15,7 @@ exports.createJob = async (req, res) => {
   }
 };
 
-exports.getJobs = async (req, res) => {
+const getJobs = async (req, res) => {
   try {
     const jobs = await Job.find({});
     res.status(200).json(jobs);
@@ -23,3 +23,5 @@ exports.getJobs = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+module.exports = {createJob, getJobs}

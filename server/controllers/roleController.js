@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const role = require('../models/role');
 const { sendMail } = require('../utils/mailer');
 const otps = new Map();
-exports.registerUser = async (req, res) => {
+const registerUser = async (req, res) => {
   let { email, password } = req.body;
   try {
     let user = await role.findOne({ email: email });
@@ -52,7 +52,7 @@ exports.registerUser = async (req, res) => {
   }
 };
 
-exports.loginUser = async (req, res) => {
+const loginUser = async (req, res) => {
   let { email, password } = req.body;
   let user = await role.findOne({ email });
   if (!user) {
@@ -74,3 +74,5 @@ exports.loginUser = async (req, res) => {
     .status(200)
     .json({ msg: "user loggedIn", token: token, isVerified: user.isVerified,isActive: user.isActive });
 };
+
+module.exports = {registerUser,loginUser}
