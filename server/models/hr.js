@@ -9,4 +9,6 @@ const hrSchema = new mongoose.Schema({
     role:{type:"string",enum:['HR'],default:'HR'}
 })
 
-console.log("yergehergye");
+const HR = mongoose.model('HR', hrSchema);
+
+module.exports = HR
