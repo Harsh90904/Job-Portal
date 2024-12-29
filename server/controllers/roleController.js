@@ -17,8 +17,8 @@ exports.registerUser = async (req, res) => {
         email: user.email,
         id: user.id,
         role: user.role,
+        country: user.country,
         username: user.username,
-        isActive: user.isActive,
       };
       let token = await jwt.sign(data, "private-key");
       console.log(token);
