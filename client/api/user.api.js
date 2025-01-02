@@ -1,6 +1,7 @@
-import { baseurl } from "./baseURL.js";
+
 import { getToken } from "../utils/cookies.js";
-export const role= {
+const baseurl = "http://localhost:8090"
+export const roleapi= {
     signup: async (user) => {
         try {
           let req = await fetch(`${baseurl}/role/signup`, {
@@ -12,7 +13,6 @@ export const role= {
           });
           let res = await req.json();
           Cookies.set("token", res.token, { expires: 1 });
-          Cookies.set("isVerified", res.isVerified);
           console.log(res);
           window.location.href = "/";
         } catch (error) {
@@ -20,6 +20,7 @@ export const role= {
         }
       },
       login: async (user) => {
+        console.log(user);
         try {
           let req = await fetch(`${baseurl}/role/login`, {
             method: "POST",
@@ -29,13 +30,8 @@ export const role= {
             body: JSON.stringify(user),
           });
           let res = await req.json();
-          if (res.isActive) {
             Cookies.set("token", res.token, { expires: 1/24 });
-            Cookies.set("isVerified", res.isVerified);
-            window.location.href = "/";
-          } else {
-            alert("not activated");
-          }
+            window.location.href = "http://127.0.0.1:5500/client/index.html";
         } catch (error) {
           console.log("Failed to sign up", error);
         }

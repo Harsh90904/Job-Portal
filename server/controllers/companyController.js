@@ -10,7 +10,7 @@ const createcompany = async (req,res) => {
             error,
             password: hashedPassword,
             phone,
-            stasus
+            stasus,
         });
         res.status(201).send(companydata);
     } catch (error) {

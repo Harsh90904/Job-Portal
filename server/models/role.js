@@ -5,6 +5,7 @@ const roleSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   country:{ type: String, required:true},
+  company:{ type: String},
   role: { type: String, enum: ['User', 'HR', 'Admin', 'CEO'], default: 'User' },
 });
 

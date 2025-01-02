@@ -1,7 +1,7 @@
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const role = require('../models/role');
-const { sendMail } = require('../utils/mailer');
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const role = require("../models/role");
+const { sendMail } = require("../utils/mailer");
 const otps = new Map();
 exports.registerUser = async (req, res) => {
   let { email, password } = req.body;
@@ -18,8 +18,9 @@ exports.registerUser = async (req, res) => {
         id: user.id,
         role: user.role,
         country: user.country,
-        username: user.username,
+        name: user.name,
       };
+      console.log(data);
       let token = await jwt.sign(data, "private-key");
       console.log(token);
       let otp = Math.round(Math.random() * 10000);
@@ -41,10 +42,14 @@ exports.registerUser = async (req, res) => {
       } catch (error) {
         return res.status(400).send({ message: error.message });
       }
-      return res.status(201).send({
+      console.log({
         msg: "user created",
         token: token,
-        isVerified: user.isVerified,
+      });
+
+      return res.status(201).json({
+        msg: "user created",
+        token: token,
       });
     }
   } catch (error) {
@@ -54,23 +59,34 @@ exports.registerUser = async (req, res) => {
 
 exports.loginUser = async (req, res) => {
   let { email, password } = req.body;
-  let user = await role.findOne({ email });
-  if (!user) {
-    return res.status(404).send({ msg: "user not found" });
+
+  try {
+    let user = await role.findOne({ email });
+    if (!user) {
+      return res.status(404).send({ msg: "user not found" });
+    }
+
+    let isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(404).send({ msg: "invalid password" });
+    }
+
+    let data = {
+      email: user.email,
+      id: user.id,
+      role: user.role,
+      name: user.name,
+    };
+
+    console.log("User data:", data);
+
+    let token = await jwt.sign(data, "private-key");
+    console.log("Generated token:", token);
+
+    return res.status(200).send({ msg: "user loggedIn", token: token });
+  } catch (error) {
+    console.error("Error logging in user:", error.message);
+    return res.status(500).send({ msg: "Internal server error", error: error.message });
   }
-  let isMatch = await bcrypt.compare(password, user.password);
-  if (!isMatch) {
-    return res.status(404).send({ msg: "invalid password " });
-  }
-  let data = {
-    email: user.email,
-    id: user.id,
-    role: user.role,
-    username: user.username,
-    isActive: user.isActive,
-  };
-  let token = await jwt.sign(data, "private-key");
-  return res
-    .status(200)
-    .send({ msg: "user loggedIn", token: token, isVerified: user.isVerified,isActive: user.isActive });
 };
+

@@ -1,9 +1,34 @@
+import { getUserData } from "../utils/cookies.js";
+
+let { token } = Cookies.get();
+
+const decodedToken = token ? jwt_decode(token) : undefined;
+const logOut = () => {
+  console.log("Decoded token");
+
+  Cookies.remove("token");
+  window.location.href = "/pages/login.html";
+};
 export const navbar = () => {
-    return `
+  let tag = ``;
+  let hrtag = ``;
+  if (decodedToken) {
+    tag = `<a class="nav-link" id=logout>Logout</a>`;
+  } else {
+    tag = `<a class="nav-link" href="pages/login.html">Login</a>`;
+  }
+  
+  if(getUserData().role == "HR"){
+    hrtag = `<a class="nav-link" href="pages/Job.html">Create Job</a>`;
+  }
+  else{
+    hrtag = ``
+  }
+  return `
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
-                <img src="./images/logos/logo.png" alt="">
+                <img src="images/logos/logo.png" alt="" width="110px">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -13,7 +38,7 @@ export const navbar = () => {
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/index.html">Home</a>
+                        <a class="nav-link active" aria-current="page" href="/client">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/index.html">Company reviews</a>
@@ -22,11 +47,17 @@ export const navbar = () => {
                         <a class="nav-link active" aria-current="page" href="/index.html">Salary guide</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="./pages/signup.html">Signup</a>
+                        ${hrtag}
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="./pages/login.html">Login</a>
+                        ${tag}
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" ${
+                            decodedToken ? "" : ` href=./pages/signup.html`
+                        }>${decodedToken ? decodedToken.name : "Signup"}</a>
+                    </li>
+                    
                     <!-- <li class="nav-item">
                         <a class="nav-link" href="#">Link</a>
                     </li>
@@ -41,5 +72,12 @@ export const navbar = () => {
             </div>
         </div>
     </nav>
-    `
-}
+    `;
+};
+document.addEventListener("DOMContentLoaded", () => {
+    let logoutBtn = document.getElementById("logout");
+  
+    if (logoutBtn) {
+      logoutBtn.addEventListener("click", logOut);
+    }
+  });
