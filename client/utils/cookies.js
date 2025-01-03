@@ -1,6 +1,8 @@
 let { token } = Cookies.get();
+console.log(token);
 
 export const getToken = () => token
+console.log(getToken());
 
 export const getUserData = () => {
   const decodedToken = token ? jwt_decode(token) : undefined;

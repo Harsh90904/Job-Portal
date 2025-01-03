@@ -18,11 +18,16 @@ export const navbar = () => {
     tag = `<a class="nav-link" href="pages/login.html">Login</a>`;
   }
   
-  if(getUserData().role == "HR"){
-    hrtag = `<a class="nav-link" href="pages/Job.html">Create Job</a>`;
-  }
-  else{
-    hrtag = ``
+  try {
+    if(getUserData().role === "HR"){
+      hrtag = `<a class="nav-link" href="pages/Job.html">Create Job</a>`;
+    }
+    else{
+      hrtag = ``;
+    }
+  } catch (error) {
+    console.log(error.message);
+    
   }
   return `
         <nav class="navbar navbar-expand-lg bg-body-tertiary">

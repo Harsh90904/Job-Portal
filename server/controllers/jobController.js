@@ -1,26 +1,59 @@
-const { decode } = require('../middlewares/decode');
-const Job = require('../models/Job');
+const Job = require("../models/Job");
 
-const createJob = async (req, res) => {
+const getjob = async (req, res) => {
   try {
-    const { title, description, company, location, salary } = req.body;
-
-    const job = new Job({ title, description, company, location, salary });
-    await job.save();
+    let job = await Job.find();
     console.log(job);
-    
-    res.status(201).send({ message: 'Job created successfully', job });
+
+    res.send(job);
   } catch (error) {
-    res.status(500).send({ error: error.message });
+    res.send({ message: error });
+  }
+};
+const createjob = async (req, res) => {
+  req.body.user = req.user.id;
+  console.log(req.body);
+  try {
+    let job = await Job.create(req.body);
+    res.send(job);
+  } catch (error) {
+    res.send({ message: error });
+  }
+};
+const getjobById = async (req, res) => {
+  try {
+    let { jobid } = req.params;
+    let job = await Job.findById(jobid);
+    res.send(job);
+  } catch (error) {
+    res.send({ message: error });
+  }
+};
+const upadatejob = async (req, res) => {
+  try {
+    const { jobid } = req.params;
+    let job = await Job.findByIdAndUpdate(jobid, req.body, {
+      new: true,
+    });
+    res.send(job);
+  } catch (error) {
+    res.send({ message: error });
+  }
+};
+const deletejob = async (req, res) => {
+  try {
+    const { jobid } = req.params;
+    let job = await Job.findByIdAndDelete(jobid);
+    res.send(job);
+  } catch (error) {
+    res.send({ error: error });
   }
 };
 
-const getJobs = async (req, res) => {
-  try {
-    const jobs = await Job.find({});
-    res.status(200).send(jobs);
-  } catch (error) {
-    res.status(500).send({ error: error.message });
-  }
+module.exports = {
+  getjob,
+  createjob,
+  getjobById,
+  upadatejob,
+  deletejob,
 };
-module.exports = {createJob,getJobs}

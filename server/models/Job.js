@@ -6,6 +6,8 @@ const jobSchema = new mongoose.Schema({
   company: { type: String, required: true },
   location: { type: String, required: true },
   salary: { type: Number },
+  email: { type: String, required: true },
+  number: { type: Number, required: true },
   postedAt: { type: Date, default: Date.now },
   user:{type:mongoose.Types.ObjectId , ref:"user"}
 });
