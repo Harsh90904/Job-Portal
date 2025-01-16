@@ -11,7 +11,8 @@ export const jobapi =  {
                 method: "POST",
                 headers: {
                     "content-type": "application/json",
-                    Authorization: `Bearer ${getToken()}`,
+                    Authorization: `Bearer ${getToken(
+                    )}`,
                 },
                 body: JSON.stringify(data),
             });

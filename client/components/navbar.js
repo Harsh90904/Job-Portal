@@ -63,8 +63,8 @@ export const navbar = () => {
                         }>${decodedToken ? decodedToken.name : "Signup"}</a>
                     </li>
                     
-                    <!-- <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="">Link</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Link</a>
