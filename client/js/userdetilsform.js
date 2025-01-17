@@ -1,4 +1,4 @@
-import { userapi } from './api.js';
+import { userapi } from '../api/pro.api.js';
 import {navbar} from "../components/navbar.js";
 
 document.getElementById("navbar").innerHTML = navbar();
@@ -28,10 +28,9 @@ form.addEventListener('submit', async (event) => {
     };
 
     try {
-        // Call API to create a profile
         const response = await userapi.createprofile(profileData);
 
-        // Display success message
+        
         if (response && response.message) {
             messageDiv.innerHTML = `<div class="alert alert-success">${response.message}</div>`;
             form.reset();
@@ -39,7 +38,7 @@ form.addEventListener('submit', async (event) => {
             messageDiv.innerHTML = `<div class="alert alert-danger">An error occurred</div>`;
         }
     } catch (error) {
-        // Display error message
+        
         messageDiv.innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
     }
 });

@@ -12,6 +12,7 @@ const logOut = () => {
 export const navbar = () => {
   let tag = ``;
   let hrtag = ``;
+  let usertag = ``;
   if (decodedToken) {
     tag = `<a class="nav-link" id=logout>Logout</a>`;
   } else {
@@ -24,6 +25,17 @@ export const navbar = () => {
     }
     else{
       hrtag = ``;
+    }
+  } catch (error) {
+    console.log(error.message);
+    
+  }
+  try {
+    if(getUserData().role === "User"){
+      usertag = `<a class="nav-link" href="./pages/profile.html">Profile</a>`;
+    }
+    else{
+      usertag = ``;
     }
   } catch (error) {
     console.log(error.message);
@@ -64,11 +76,9 @@ export const navbar = () => {
                     </li>
                     
                     <li class="nav-item">
-                        <a class="nav-link" href="">Link</a>
+                       ${usertag}
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
-                    </li> 
+                    
                 </ul>
                 <form class="d-flex" role="search">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">

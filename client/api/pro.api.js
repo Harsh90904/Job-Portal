@@ -6,7 +6,7 @@ export const userapi = {
     // Create a new profile
     createprofile: async (profileData) => {
         try {
-            const response = await fetch(`${baseurl}/api/createprofile`, {
+            const response = await fetch(`${baseurl}/user`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -23,7 +23,7 @@ export const userapi = {
     // Get all users
     getusers: async () => {
         try {
-            const response = await fetch(`${baseurl}/api/users`);
+            const response = await fetch(`${baseurl}/user`);
             return await response.json();
         } catch (error) {
             console.error("Error fetching users:", error);
@@ -34,7 +34,7 @@ export const userapi = {
     // Get a user by ID
     getuserbyid: async (id) => {
         try {
-            const response = await fetch(`${baseurl}/api/users/${id}`);
+            const response = await fetch(`${baseurl}/user/${id}`);
             return await response.json();
         } catch (error) {
             console.error("Error fetching user by ID:", error);
@@ -45,7 +45,7 @@ export const userapi = {
     // Update a user
     updateuser: async (id, updates) => {
         try {
-            const response = await fetch(`${baseurl}/api/users/${id}`, {
+            const response = await fetch(`${baseurl}/user/${id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json"
@@ -62,7 +62,7 @@ export const userapi = {
     // Delete a user
     deleteuser: async (id) => {
         try {
-            const response = await fetch(`${baseurl}/api/users/${id}`, {
+            const response = await fetch(`${baseurl}/user/${id}`, {
                 method: "DELETE"
             });
             return await response.json();

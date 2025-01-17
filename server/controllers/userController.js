@@ -7,7 +7,7 @@ const createprofile = async (req, res) => {
         const { name, email, number, city, state, country, zip, password, resume, skills, education, university, experience, github, linkedin } = req.body;
 
         const hashedPassword = await bcrypt.hash(password, 10);
-        const user =  await User.create({
+        const data = {
             name,
             email,
             password: hashedPassword,
@@ -23,11 +23,16 @@ const createprofile = async (req, res) => {
             experience,
             github,
             linkedin
-        });
+        };
 
+        const user = await User.create(data);
         res.status(201).send({ message: 'User created successfully', user });
     } catch (error) {
-        res.status(500).send({ message: 'Error creating user', error });
+        console.error('Error creating user:', error); // Logs the error in the console for debugging
+        res.status(500).send({ 
+            message: 'Error creating user', 
+            error: error.message || 'Internal Server Error' 
+        });
     }
 };
 const getuser = async (req, res) => {
